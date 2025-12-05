@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="index.css"> <!-- Your main CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+   <title>Product Detail</title>
+</head>
+<body>
+    <div class="product-detail-container">
+  <!-- Left: Images -->
+  <div class="product-images">
+    <img id="mainImage" src="" alt="Product Image" class="main-image">
+    <div id="thumbnailRow" class="thumbnail-row"></div>
+  </div>
+
+  <!-- Right: Product Info -->
+  <div class="product-info">
+    <h1 id="productName"></h1>
+    <div id="productRating" class="rating"></div>
+    <p id="productPrice" class="price"></p>
+    <p id="productDescription" class="description"></p>
+
+    <div class="variant-selector">
+      <label>Size:</label>
+      <select>
+        <option>S</option>
+        <option>M</option>
+        <option>L</option>
+        <option>XL</option>
+      </select>
+    </div>
+
+    <button class="btn add-to-cart">Add to Cart</button>
+
+    <div class="product-tabs">
+      <button class="tab active">Details</button>
+      <button class="tab">Reviews</button>
+      <button class="tab">Shipping</button>
+    </div>
+
+    <div class="tab-content">
+      <p id="tabContent"></p>
+    </div>
+  </div>
+</div>
+
+ <script>
+const products = {
+  1: {
+    name: "T-shirt",
+    price: "$50.00",
+    rating: 4.5,
+    description: "Classic cotton T-shirt, comfortable fit, available in multiple colors and sizes.",
+    images: ["images/buy-1.jpg", "images/buy-2.jpg", "images/buy-3.jpg"]
+  },
+  2: {
+    name: "Casual Shirt",
+    price: "$45.00",
+    rating: 3.5,
+    description: "Casual shirt made from high-quality fabric, perfect for daily wear.",
+    images: ["images/buy-2.jpg", "images/buy-1.jpg", "images/buy-3.jpg"]
+  },
+  3: {
+    name: "Jeans",
+    price: "$60.00",
+    rating: 2.5,
+    description: "Comfortable denim jeans, perfect fit for everyday use.",
+    images: ["images/buy-3.jpg", "images/buy-1.jpg", "images/buy-2.jpg"]
+  }
+};
+// Step 4: Load product dynamically
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('id');
+
+const product = products[productId];
+
+if (product) {
+  document.getElementById('productName').innerText = product.name;
+  document.getElementById('productPrice').innerText = product.price;
+  document.getElementById('productDescription').innerText = product.description;
+
+  // Rating stars
+  const ratingContainer = document.getElementById('productRating');
+  const fullStars = Math.floor(product.rating);
+  const halfStar = product.rating % 1 >= 0.5;
+  let starsHTML = '';
+  for (let i = 0; i < fullStars; i++) starsHTML += '<i class="fa-solid fa-star"></i>';
+  if (halfStar) starsHTML += '<i class="fa-solid fa-star-half-stroke"></i>';
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+  for (let i = 0; i < emptyStars; i++) starsHTML += '<i class="fa-regular fa-star"></i>';
+  ratingContainer.innerHTML = starsHTML;
+
+ const thumbnailRow = document.getElementById('thumbnailRow');
+ 
+
+// Clear old thumbnails
+thumbnailRow.innerHTML = '';
+
+product.images.forEach(img => {
+  const thumb = document.createElement('img');
+  thumb.src = img;
+  thumb.addEventListener('click', () => mainImage.src = img);
+  thumbnailRow.appendChild(thumb);
+});
+
+
+  // Tab content
+  document.getElementById('tabContent').innerText = product.description;
+} else {
+  alert('Product not found!');
+}
+</script>
+
+
+</body>
+</html>
